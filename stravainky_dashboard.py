@@ -4,7 +4,6 @@ from inky.inky_uc8159 import Inky
 from PIL import Image, ImageFont, ImageDraw
 from font_fredoka_one import FredokaOne
 import datetime
-import calendar
 import time
 
 # Get data from config.py file
@@ -98,8 +97,9 @@ def ride_total_year(access_token):
 
 def ride_total_month(access_token):
     now = datetime.datetime.today()
-    firstday, lastday = calendar.monthrange(now.year, now.month)
-    firstday_epoch = datetime.datetime(now.year, now.month, firstday).timestamp()
+    # Get the first day of this month (so we can query from the start of this)
+    firstday = now.replace(day=1)
+    firstday_epoch = datetime.datetime(now.year, now.month, firstday.day).timestamp()
     print(f"firstday_epoch: {firstday_epoch}")
 
     activities_url = f"https://www.strava.com/api/v3/athlete/activities?" \
