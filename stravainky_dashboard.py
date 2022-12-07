@@ -1,3 +1,5 @@
+#! /usr/bin/python3
+
 import json
 import requests
 from inky.inky_uc8159 import Inky
@@ -110,9 +112,9 @@ def ride_total_month(access_token):
 
     try:
         activitiesresponse = requests.get(activities_url)
-    except requests.ConnectionError:
-        print("ConnectionError")
-        exit(1)
+    # except requests.ConnectionError:
+    #     print("ConnectionError")
+    #     exit(1)
     except requests.HTTPError:
         print("HTTPError")
         exit(2)
@@ -156,13 +158,33 @@ inky_display = Inky()
 inky_display.set_border(inky_display.BLACK)
 
 img = Image.new("P", (600, 448))
-bikeimg = Image.open("racingbikeicon_flip2.jpg", "r")
-bikeimg_w, bikeimg_h = bikeimg.size
+# bikeimg = Image.open("racingbikeicon_flip2.jpg", "r")
+# bikeimg_w, bikeimg_h = bikeimg.size
+bikeinwoodsimg = Image.open("fietserinbos.png", "r")
+bikeinwoodsimg_w, bikeinwoodsimg_h = bikeinwoodsimg.size
+
+# Bicycle icon
+back_im = img.copy()
+# bikeimage_position = (25, 25)
+back_im.paste(bikeinwoodsimg, (0,0))
+# back_im.paste(bikeimg, (25, round((inky_display.HEIGHT / 2) - (h / 2) - 100 - bikeimg_h/2)))
+
 
 draw = ImageDraw.Draw(img)
 largefont = ImageFont.truetype("usr/share/fonts/truetype/noto/NotoMono-Regular.ttf", 50)
 font = ImageFont.truetype("usr/share/fonts/truetype/noto/NotoMono-Regular.ttf", 24)
 smallfont = ImageFont.truetype("usr/share/fonts/truetype/noto/NotoMono-Regular.ttf", 18)
+
+# Text colours
+year_fill = "blue"
+year_shadow = "white"
+month_fill = "red"
+month_shadow = "white"
+yearextrapol_fill = "green"
+yearextrapol_shadow = "white"
+# Text outline settings
+message_stroke = 4
+description_stroke = 2
 
 messageyear = f"{rideyeartotal} km"
 yeardescription = "distance this year"
@@ -186,31 +208,29 @@ yearextrapol_description = "projected kms this year"
 yearextrapoldesc_position = (120, 270)
 yearextrapol_position = (220, 310)
 
-bbox = draw.textbbox(year_position, messageyear, font=font)
-draw.rectangle((0, 0, inky_display.WIDTH, inky_display.HEIGHT), fill=inky_display.WHITE)
-draw.text(yeardesc_position, yeardescription, inky_display.BLUE, font)
-draw.text(year_position, messageyear, inky_display.BLUE, largefont)
-draw.text(monthdesc_position, monthdescription, inky_display.RED, font)
-draw.text(month_position, messagemonth, inky_display.RED, largefont)
-draw.text(yearextrapoldesc_position, yearextrapol_description, inky_display.GREEN, font)
-draw.text(yearextrapol_position, messageexpy, inky_display.GREEN, largefont)
+with Image.open("fietserinbos.png") as img:
+
+    draw = ImageDraw.Draw(img)
+    bbox = draw.textbbox(year_position, messageyear, font=font)
+    # draw.rectangle((0, 0, inky_display.WIDTH, inky_display.HEIGHT), fill=inky_display.WHITE)
+    draw.text(yeardesc_position, yeardescription, year_fill, font, stroke_width=description_stroke, stroke_fill=year_shadow)
+    draw.text(year_position, messageyear, year_fill, largefont, stroke_width=message_stroke, stroke_fill=year_shadow)
+    draw.text(monthdesc_position, monthdescription, month_fill, font, stroke_width=description_stroke, stroke_fill=month_shadow)
+    draw.text(month_position, messagemonth, month_fill, largefont, stroke_width=message_stroke, stroke_fill=month_shadow)
+    draw.text(yearextrapoldesc_position, yearextrapol_description, yearextrapol_fill, font, stroke_width=description_stroke, stroke_fill=yearextrapol_shadow)
+    draw.text(yearextrapol_position, messageexpy, yearextrapol_fill, largefont, stroke_width=message_stroke, stroke_fill=yearextrapol_shadow)
 
 
-# Last update
-now = datetime.datetime.today()
-lastupdate = f"Last update: {now.year}-{now.month}-{now.day} {now.hour}:{now.minute}"
-lastupdate_width, lastupdate_height = font.getsize(lastupdate)
-lastupdate_position = ((inky_display.WIDTH / 2) - (lastupdate_width / 2) + 170, \
-                  (inky_display.HEIGHT / 2) - (lastupdate_height) + 210)
-draw.text(lastupdate_position, lastupdate, inky_display.BLACK, smallfont)
+    # Last update
+    now = datetime.datetime.today()
+    lastupdate = f"Last update: {now.year}-{now.month}-{now.day} {now.hour}:{now.minute}"
+    lastupdate_width, lastupdate_height = font.getsize(lastupdate)
+    lastupdate_position = ((inky_display.WIDTH / 2) - (lastupdate_width / 2) + 150, \
+                    (inky_display.HEIGHT / 2) - (lastupdate_height) + 210)
+    draw.text(lastupdate_position, lastupdate, inky_display.BLACK, smallfont)
 
+# Image out to test if colours display differently on the Inky display
+img.save("stravainky_dashboard_out.png")
 
-# Bicycle icon
-back_im = img.copy()
-bikeimage_position = (25, 25)
-back_im.paste(bikeimg, (bikeimage_position))
-# back_im.paste(bikeimg, (25, round((inky_display.HEIGHT / 2) - (h / 2) - 100 - bikeimg_h/2)))
-
-
-inky_display.set_image(back_im)
+inky_display.set_image(img)
 inky_display.show()
