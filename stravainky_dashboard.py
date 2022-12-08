@@ -7,10 +7,17 @@ from PIL import Image, ImageFont, ImageDraw
 from font_fredoka_one import FredokaOne
 import datetime
 import time
+import os, sys
+import random
 
 # Get data from config.py file
 from config import client_id, client_secret
 from config import redirect_uri, refresh_token
+
+
+scriptdir = sys.path[0]
+imagepath = os.path.join(scriptdir, "images")
+image_list = os.listdir(imagepath)
 
 
 def request_token(client_id, client_secret, code):
@@ -158,9 +165,11 @@ inky_display = Inky()
 inky_display.set_border(inky_display.BLACK)
 
 img = Image.new("P", (600, 448))
-# bikeimg = Image.open("racingbikeicon_flip2.jpg", "r")
-# bikeimg_w, bikeimg_h = bikeimg.size
-bikeinwoodsimg = Image.open("fietserinbos.png", "r")
+
+# Pick a random image from the list of files in the images directory
+randomimage = random.choice(image_list)
+backgroundimage = os.path.join(imagepath, randomimage)
+bikeinwoodsimg = Image.open(backgroundimage, "r")
 bikeinwoodsimg_w, bikeinwoodsimg_h = bikeinwoodsimg.size
 
 # Bicycle icon
@@ -208,7 +217,7 @@ yearextrapol_description = "projected kms this year"
 yearextrapoldesc_position = (120, 270)
 yearextrapol_position = (220, 310)
 
-with Image.open("fietserinbos.png") as img:
+with Image.open(backgroundimage) as img:
 
     draw = ImageDraw.Draw(img)
     bbox = draw.textbbox(year_position, messageyear, font=font)
