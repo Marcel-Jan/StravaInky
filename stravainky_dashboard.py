@@ -211,7 +211,11 @@ month_position = (250, 200)
 date = datetime.date.today()
 daystoday = (datetime.datetime.now().timestamp()-time.mktime(datetime.date(year=date.year, month=1, day=1).timetuple()))/60/60/24
 # To solve: on 1 jan daystoday will be 0. Division by 0.
-extrapol_yeartotal = round(rideyeartotal * (365/daystoday),1)
+if daystoday > 0:
+    extrapol_yeartotal = round(rideyeartotal * (365/daystoday),1)
+else:
+    extrapol_yeartotal = 0
+    
 messageexpy = f"{extrapol_yeartotal} km"
 yearextrapol_description = "projected kms this year"
 yearextrapoldesc_position = (120, 270)
