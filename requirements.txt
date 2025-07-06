@@ -1,0 +1,4 @@
+pillow>=11.2.1
+python-dotenv>=1.1.0
+stravalib>=2.3
+inky[rpi]>=1.5.0
