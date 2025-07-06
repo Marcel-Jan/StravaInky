@@ -1,0 +1,10 @@
+[Unit]
+Description=stravainkydashboard
+After = network.target # Assuming you want to start after network interfaces are made available
+
+[Service]
+ExecStart=/home/inkyfour/PythonProjects/StravaInky/.venv/bin/python3 /home/inkyfour/PythonProjects/StravaInky/src/stravainky/stravainky_dashboard.py
+SyslogIdentifier =
+
+[Install]
+WantedBy=multi-user.target

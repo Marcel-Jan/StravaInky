@@ -1,0 +1,3 @@
+[Timer]
+OnCalendar=*-*-* *:00:00
+Unit=stravainkydashboard.service

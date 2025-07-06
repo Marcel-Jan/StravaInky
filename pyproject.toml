@@ -1,0 +1,21 @@
+[project]
+name = "stravainky"
+version = "0.2.0"
+description = "Display your Strava activities on an Inky pHAT display."
+authors = [
+    { name = "Marcel-Jan Krijgsman", email = "stravainky@marcel-jan.eu" },
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pillow>=11.2.1",
+    "python-dotenv>=1.1.0",
+    "stravalib>=2.3",
+]
+
+[project.scripts]
+stravainky = "stravainky:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
