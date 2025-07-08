@@ -36,10 +36,10 @@ Note that I chose to use an older version of the inky package. I'm getting this 
 
 ## Create a .env file in the project folder
 It should have the following contents:  
-                `STRAVA_CLIENT_ID='<your Strava client_id>'`  
-                `STRAVA_CLIENT_SECRET='<your Strava client_secret>'`  
-                `REDIRECT_URI = 'http://localhost'`  
-                `STRAVA_REFRESH_TOKEN = '<refresh token>'`  
+        STRAVA_CLIENT_ID='<your Strava client_id>'  
+        STRAVA_CLIENT_SECRET='<your Strava client_secret>'  
+        REDIRECT_URI = 'http://localhost'  
+        STRAVA_REFRESH_TOKEN = '<refresh token>'  
 
 ## Try to run the Strava Inky dashboard
 
